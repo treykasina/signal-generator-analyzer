@@ -1,0 +1,10 @@
+# Build directories
+build/
+bin/
+
+# Node modules (if you add JS libraries later)
+node_modules/
+
+# Compiled Wasm files (these should be built locally or via GitHub actions, not stored in source control)
+public/*.wasm
+public/*_wasm.js
