@@ -1,14 +1,24 @@
-#include <emscripten/bind.h>
-#include "SignalGenerator.hpp"
+#include <iostream>
+#include <vector>
+#include <cmath>
 
-using namespace emscripten;
+// Generator defined BEFORE main to avoid "undefined" errors
+std::vector<double> generateSineWave(int samples, double frequency) {
+    std::vector<double> signal;
+    for (int i = 0; i < samples; ++i) {
+        double value = std::sin(2.0 * M_PI * frequency * (static_cast<double>(i) / samples));
+        signal.push_back(value);
+    }
+    return signal;
+}
 
-// Expose the C++ class to JavaScript
-EMSCRIPTEN_BINDINGS(signal_module) {
-    class_<SignalGenerator>("SignalGenerator")
-        .constructor<double>()
-        .function("generateSine", &SignalGenerator::generateSine);
-        
-    // Allow JavaScript to understand C++ std::vector
-    register_vector<double>("VectorDouble");
+void analyzeSignal(const std::vector<double>& signal) {
+    std::cout << "Successfully analyzed " << signal.size() << " samples." << std::endl;
+}
+
+int main() {
+    std::cout << "--- Signal Analyzer Starting ---" << std::endl;
+    std::vector<double> mySignal = generateSineWave(100, 1.0);
+    analyzeSignal(mySignal);
+    return 0;
 }
